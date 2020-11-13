@@ -1,0 +1,9 @@
+main: water.of.cup.Camera
+name: Cameras
+version: '0.1'
+description: Take Pictures.
+author: Nicholas Kopiwoda
+api-version: 1.14
+commands:
+  takepicture:
+    description: take a picture
