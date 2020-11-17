@@ -2,6 +2,7 @@ package water.of.cup;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapPalette;
@@ -17,18 +18,19 @@ public class Renderer extends MapRenderer {
 		if (map.isLocked()) {
 			return;
 		}
-		Vector yshift = player.getEyeLocation().getDirection().rotateAroundY(.25 * 2 * 3.14); // .25 in radians
-
+		Location eyes = player.getEyeLocation();
+		double pitch = -Math.toRadians(player.getEyeLocation().getPitch());
+		double yaw = Math.toRadians(player.getEyeLocation().getYaw() + 90);
+		
 		for (int x = 0; x < 128; x++) {
 			for (int y = 0; y < 128; y++) {
-				RayTraceResult result = player.getWorld().rayTraceBlocks(player.getEyeLocation(),
-						player.getEyeLocation().getDirection().rotateAroundY(((x + 1) * .9 / 128 - .45) * -1)
-								.rotateAroundAxis(yshift, ((y + 1) * .9 / 128 - .45)), 
-						256);
 				
-
+				double yrotate = -((y) * .9 / 128 - .45);
+				double xrotate = ((x) * .9 / 128 - .45);
+				
+				RayTraceResult result = player.getWorld().rayTraceBlocks(eyes, new Vector(Math.cos(yaw + xrotate)*Math.cos(pitch + yrotate), Math.sin(pitch + yrotate), Math.sin(yaw + xrotate)*Math.cos(pitch + yrotate)), 256);
+				//Bukkit.getLogger().info("Pitch: " + pitch + ", Yaw: " + yaw);
 				if (result != null) {
-					// System.out.println(result.getHitBlock().getType());
 					canvas.setPixel(x, y, Utils.colorFromType(result.getHitBlock().getType(), result.getHitBlock().getLightFromBlocks() + result.getHitBlock().getLightFromSky()));
 				} else {
 					canvas.setPixel(x, y, MapPalette.PALE_BLUE);
