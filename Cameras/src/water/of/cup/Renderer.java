@@ -1,5 +1,6 @@
 package water.of.cup;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.map.MapCanvas;
@@ -34,6 +35,20 @@ public class Renderer extends MapRenderer {
 				}
 			}
 		}
+
+		byte[][] byteArr = toBytes(canvas);
+		MapStorage.store(map.getId(), byteArr);
+
 		map.setLocked(true);
+	}
+
+	private static byte[][] toBytes(MapCanvas canvas) {
+		byte[][] bytes = new byte[128][128]; // According to doc map size is 128x128
+		for (int i = 0; i < bytes.length; i++) {
+			for (int j = 0; j < bytes[i].length; j++) {
+				bytes[i][j] = canvas.getPixel(i, j);
+			}
+		}
+		return bytes;
 	}
 }

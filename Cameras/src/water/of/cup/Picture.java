@@ -27,10 +27,11 @@ public class Picture {
         //MapCanvas mapCanvas = new MapCanvas();
         for(MapRenderer renderer : mapView.getRenderers())
             mapView.removeRenderer(renderer);
-        
-        mapView.addRenderer(new Renderer());
-        
-        
+
+        Renderer customRenderer = new Renderer();
+
+        mapView.addRenderer(customRenderer);
+
 		mapMeta.setMapView(mapView);
 		
 //		itemStack.setDurability((short) mapView.getId());
