@@ -191,7 +191,7 @@ public class Utils {
 		
 		return MapPalette.matchColor(color);
 		} catch (Exception e) {
-			System.out.print("Missing:" + type.toString());
+//			System.out.print("Missing:" + type.toString());
 		}
 		return MapPalette.GRAY_2;
 //		
