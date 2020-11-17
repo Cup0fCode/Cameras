@@ -36,6 +36,7 @@ public class Renderer extends MapRenderer {
 			}
 		}
 
+		// TODO: Make async
 		byte[][] byteArr = toBytes(canvas);
 		MapStorage.store(map.getId(), byteArr);
 
