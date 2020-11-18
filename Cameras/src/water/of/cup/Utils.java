@@ -4,8 +4,15 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_14_R1.block.CraftBlock;
 import org.bukkit.map.MapPalette;
+
+import net.minecraft.server.v1_14_R1.MaterialMapColor;
+import net.minecraft.server.v1_14_R1.MinecraftServer;
 
 public class Utils {
 	static Map<Material,Color> blocksMap = new HashMap<Material,Color>();
@@ -175,101 +182,16 @@ public class Utils {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static byte colorFromType(Material type, int light) {
+	public static byte colorFromType(Block block, int light) {
 		try {
-		Color color = blocksMap.get(type);
-		
-//		if (light < 10) {
-//			color = color.darker();
-//		}
-//		if (light < 6) {
-//			color = color.darker();
-//		}
-//		if (light < 3) {
-//			color = color.darker();
-//		}
-		
+		Color color = blocksMap.get(block.getType());
+			//MaterialMapColor color = ((CraftBlock) block).getNMS().c(null, null);
 		return MapPalette.matchColor(color);
+		//return MapPalette.matchColor(color);
 		} catch (Exception e) {
-//			System.out.print("Missing:" + type.toString());
+			System.out.print("Missing:" + block.getType().toString());
 		}
 		return MapPalette.GRAY_2;
-//		
-//		switch (name) {
-//		case "GRASS_BLOCK":
-//			return MapPalette.matchColor(82,129,69);
-//		case "GRASS":
-//		case "TALL_GRASS":
-//			return MapPalette.matchColor(49,101,25);
-//		case "COBBLESTONE":
-//		case "COBBLESTONE_SLAB":
-//		case "FURNACE":
-//			return MapPalette.matchColor(130,130,130);
-//		case "STONE":
-//		case "STONE_SLAB":
-//		case "IRON_ORE":
-//		case "GOLD_ORE":
-//		case "REDSTONE_ORE":
-//		case "DIAMOND_ORE":
-//		case "COAL_ORE":
-//		case "EMERALD_ORE":
-//		case "LAPIS_ORE":
-//			return MapPalette.matchColor(117,117,117);
-//		case "IRON_BLOCK":
-//			return MapPalette.matchColor(236,236,236);
-//		case "GOLD_BLOCK":
-//			return MapPalette.matchColor(243,223,75);
-//		case "REDSTONE_BLOCK":
-//			return MapPalette.matchColor(196,25,16);
-//		case "DIAMOND_BLOCK":
-//			return MapPalette.matchColor(95,233,217);
-//		case "COAL_BLOCK":
-//			return MapPalette.matchColor(19,19,19);
-//		case "EMERALD_BLOCK":
-//			return MapPalette.matchColor(71,213,105);
-//		case "LAPIS_BLOCK":
-//			return MapPalette.matchColor(42,80,139);
-//		case "WATER":
-//		case "SEAGRASS":
-//		case "BUBBLE_COLUMN":
-//		case "TALL_SEAGRASS":
-//		case "KELP":
-//			return MapPalette.matchColor(67,101,165);
-//		case "DIRT":
-//			return MapPalette.matchColor(168,120,83);
-//		case "OAK_LOG":
-//		case "SPRUCE_LOG":
-//			return MapPalette.BROWN;
-//		case "SNOW":
-//			return MapPalette.WHITE;
-//		case "SPRUCE_LEAVES":
-//		case "OAK_LEAVES":
-//			return MapPalette.DARK_GREEN;
-//		case "POPPY":
-//			return MapPalette.RED;
-//		case "SAND":
-//			return MapPalette.matchColor(222,215,172);
-//		case "SANDSTONE":
-//			return MapPalette.matchColor(213,207,162);
-//		case "GRANITE":
-//			return 42;
-//		case "PINK_WOOL":
-//			return 81;
-//		case "DIORITE":
-//		case "ANDESITE":
-//			return MapPalette.LIGHT_GRAY;
-//		case "DANDELION":
-//			return MapPalette.matchColor(255, 255, 0); //YELLOW
-//		default: System.out.print(name);
-//		}
-//		
-//		return 1;
-		
-		//5-light green
-		//1-invisible
-		//80-dark pink
-		//70-light blue
-		
 		
 	}
 }
