@@ -16,7 +16,7 @@ public class CameraCommands implements CommandExecutor {
         }
         Player p = (Player) sender;
 
-        if (cmd.getName().equalsIgnoreCase("takepicture")) {
+        if (cmd.getName().equalsIgnoreCase("takepicture") && p.isOp()) {
             
             Picture.takePicture(p);
         }
