@@ -21,7 +21,9 @@ public class Renderer extends MapRenderer {
 		Location eyes = player.getEyeLocation();
 		double pitch = -Math.toRadians(player.getEyeLocation().getPitch());
 		double yaw = Math.toRadians(player.getEyeLocation().getYaw() + 90);
-		
+
+		byte[][] canvasBytes = new byte[128][128];
+
 		for (int x = 0; x < 128; x++) {
 			for (int y = 0; y < 128; y++) {
 				
@@ -32,26 +34,16 @@ public class Renderer extends MapRenderer {
 				//Bukkit.getLogger().info("Pitch: " + pitch + ", Yaw: " + yaw);
 				if (result != null) {
 					canvas.setPixel(x, y, Utils.colorFromType(result.getHitBlock(), result.getHitBlock().getLightFromBlocks() + result.getHitBlock().getLightFromSky()));
+					canvasBytes[x][y] = Utils.colorFromType(result.getHitBlock(), result.getHitBlock().getLightFromBlocks() + result.getHitBlock().getLightFromSky());
 				} else {
 					canvas.setPixel(x, y, MapPalette.PALE_BLUE);
+					canvasBytes[x][y] = MapPalette.PALE_BLUE;
 				}
 			}
 		}
 
-		// TODO: Make async
-		byte[][] byteArr = toBytes(canvas);
-		MapStorage.store(map.getId(), byteArr);
+		Bukkit.getScheduler().runTaskAsynchronously(Camera.getInstance(), () -> MapStorage.store(map.getId(), canvasBytes));
 
 		map.setLocked(true);
-	}
-
-	private static byte[][] toBytes(MapCanvas canvas) {
-		byte[][] bytes = new byte[128][128]; // According to doc map size is 128x128
-		for (int i = 0; i < bytes.length; i++) {
-			for (int j = 0; j < bytes[i].length; j++) {
-				bytes[i][j] = canvas.getPixel(i, j);
-			}
-		}
-		return bytes;
 	}
 }
