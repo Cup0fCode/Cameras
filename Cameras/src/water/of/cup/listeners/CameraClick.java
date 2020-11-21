@@ -18,9 +18,12 @@ public class CameraClick implements Listener {
 	@EventHandler
 	public void cameraClicked(PlayerInteractEvent e) {
 		Player p = e.getPlayer();
-		if (e.getAction().equals(Action.RIGHT_CLICK_AIR)
+		if ((e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
 				&& e.getItem().getItemMeta().getDisplayName().equals(ChatColor.DARK_BLUE + "Camera")) {
-			
+			if (p.getInventory().firstEmpty() == -1) {
+				p.sendMessage("You can not take a picture with a full inventory");
+				return;
+			}
 			if (p.getInventory().contains(Material.PAPER)) {
 				Map<Integer, ? extends ItemStack> paperHash = p.getInventory().all(Material.PAPER);
 				for (ItemStack item : paperHash.values()) {

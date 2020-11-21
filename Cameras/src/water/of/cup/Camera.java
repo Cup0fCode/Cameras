@@ -28,6 +28,7 @@ import com.mojang.authlib.properties.Property;
 
 import water.of.cup.commands.CameraCommands;
 import water.of.cup.listeners.CameraClick;
+import water.of.cup.listeners.CameraPlace;
 
 public class Camera extends JavaPlugin {
 
@@ -75,7 +76,7 @@ public class Camera extends JavaPlugin {
 
 		Utils.loadColors();
 		getCommand("takePicture").setExecutor(new CameraCommands());
-		registerListeners(new CameraClick());
+		registerListeners(new CameraClick(), new CameraPlace());
 		
 		
 	}
