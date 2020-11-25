@@ -92,12 +92,12 @@ public class Camera extends JavaPlugin {
 
 										skipsLeft = Integer.parseInt(str.substring(str.indexOf('_') + 1));
 
-										Bukkit.getLogger().info("MapID debug: " + mapId + " substr: " + str + " color: " + colorByte + " skipLefts: " + skipsLeft);
+//										Bukkit.getLogger().info("MapID debug: " + mapId + " substr: " + str + " color: " + colorByte + " skipLefts: " + skipsLeft);
 									}
 
 									// fix something up here
 									while(skipsLeft != 0) {
-										Bukkit.getLogger().info("MapID debug: " + mapId + " x: " + x + " y: " + y + " skipsLeft: " + skipsLeft);
+//										Bukkit.getLogger().info("MapID debug: " + mapId + " x: " + x + " y: " + y + " skipsLeft: " + skipsLeft);
 										mapCanvas.setPixel(x, y, colorByte);
 
 										y++;
