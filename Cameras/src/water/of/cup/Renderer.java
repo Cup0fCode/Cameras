@@ -18,6 +18,8 @@ public class Renderer extends MapRenderer {
 		if (map.isLocked()) {
 			return;
 		}
+		Bukkit.getLogger().info("Rendering picture...");
+
 		Location eyes = player.getEyeLocation();
 		double pitch = -Math.toRadians(player.getEyeLocation().getPitch());
 		double yaw = Math.toRadians(player.getEyeLocation().getYaw() + 90);

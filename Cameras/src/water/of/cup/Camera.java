@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -33,6 +35,7 @@ import water.of.cup.listeners.CameraPlace;
 public class Camera extends JavaPlugin {
 
 	private static Camera instance;
+	List<Integer> mapIDsNotToRender = new ArrayList<>();
 
 	@Override
 	public void onEnable() {
@@ -48,20 +51,67 @@ public class Camera extends JavaPlugin {
 				int mapId = Integer.parseInt(file.getName().split("_")[1].split(Pattern.quote("."))[0]);
 				try {
 					BufferedReader br = new BufferedReader(new FileReader(file));
-					String[] data = br.readLine().split(",");
+					String encodedData = br.readLine();
 					Bukkit.getLogger().info("Reading MapID: " + mapId);
 
 					MapView mapView = Bukkit.getMap(Integer.valueOf(mapId));
-					mapView.getRenderers().clear();
+
+					mapView.setTrackingPosition(false);
+					for(MapRenderer renderer : mapView.getRenderers())
+						mapView.removeRenderer(renderer);
+
 					mapView.addRenderer(new MapRenderer() {
 						@Override
-						public void render(MapView mapView, MapCanvas mapCanvas, Player player) {
-							int index = 0;
-							for (int x = 0; x < 128; x++) {
-								for (int y = 0; y < 128; y++) {
-									mapCanvas.setPixel(x, y, Byte.parseByte(data[index]));
-									index++;
+						public void render(MapView mapViewNew, MapCanvas mapCanvas, Player player) {
+							if(!mapIDsNotToRender.contains(mapId)) {
+								mapIDsNotToRender.add(mapId);
+
+								Bukkit.getLogger().info("Starting render... " + mapId);
+//
+//								for (int x = 0; x < 128; x++) {
+//									for (int y = 0; y < 128; y++) {
+//										mapCanvas.setPixel(x, y, (byte) 7);
+//									}
+//								}
+
+								int x = 0;
+								int y = 0;
+								int skipsLeft = 0;
+								byte colorByte = 0;
+								for(int index = 0; index < encodedData.length(); index++) {
+									if(skipsLeft == 0) {
+										int end = index;
+
+										while(encodedData.charAt(end) != ',')
+											end++;
+
+										String str = encodedData.substring(index, end);
+										index = end;
+
+										colorByte = Byte.parseByte(str.substring(0, str.indexOf('_')));
+
+										skipsLeft = Integer.parseInt(str.substring(str.indexOf('_') + 1));
+
+										Bukkit.getLogger().info("MapID debug: " + mapId + " substr: " + str + " color: " + colorByte + " skipLefts: " + skipsLeft);
+									}
+
+									// fix something up here
+									while(skipsLeft != 0) {
+										Bukkit.getLogger().info("MapID debug: " + mapId + " x: " + x + " y: " + y + " skipsLeft: " + skipsLeft);
+										mapCanvas.setPixel(x, y, colorByte);
+
+										x++;
+										if(x == 128) {
+											x = 0;
+											y++;
+										}
+
+										skipsLeft -= 1;
+									}
+
+
 								}
+								Bukkit.getLogger().info("Ending render... " + mapId);
 							}
 						}
 					});
