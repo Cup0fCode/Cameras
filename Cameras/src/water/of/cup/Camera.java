@@ -100,10 +100,10 @@ public class Camera extends JavaPlugin {
 										Bukkit.getLogger().info("MapID debug: " + mapId + " x: " + x + " y: " + y + " skipsLeft: " + skipsLeft);
 										mapCanvas.setPixel(x, y, colorByte);
 
-										x++;
-										if(x == 128) {
-											x = 0;
-											y++;
+										y++;
+										if(y == 128) {
+											y = 0;
+											x++;
 										}
 
 										skipsLeft -= 1;

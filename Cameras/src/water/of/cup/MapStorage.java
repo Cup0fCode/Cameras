@@ -14,7 +14,8 @@ import java.util.List;
 public class MapStorage {
 
     public static void store(int id, byte[][] data) {
-        String serializedData = serializeMapData(data);
+//        String serializedData = serializeMapData(data);
+        String serializedData = serializeMapDataSimple(data);
 
         Bukkit.getLogger().info("Serialized Data: " + serializedData);
 
@@ -64,6 +65,19 @@ public class MapStorage {
             }
         }
 
+        return builder.toString();
+    }
+
+    public static String serializeMapDataSimple(byte[][] data) {
+        StringBuilder builder = new StringBuilder();
+        for(int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[i].length; j++) {
+                byte color = data[i][j];
+
+                String colorString = String.format("%s", color);
+                builder.append(colorString).append("_").append(1).append(",");
+            }
+        }
         return builder.toString();
     }
 }
