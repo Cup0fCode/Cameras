@@ -3,11 +3,16 @@ package water.of.cup;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 
 public class ResourcePackManager {
 
     private File resourcePackFile;
+    private HashMap<Material, BufferedImage> imageHashMap = new HashMap<>();
 
     public void initialize() {
         File dataFolder = Camera.getInstance().getDataFolder();
@@ -25,6 +30,7 @@ public class ResourcePackManager {
             Bukkit.getLogger().info("No resource pack found, downloading...");
         } else {
             this.resourcePackFile = listOfFiles[0];
+            this.initializeImageHashmap();
             Bukkit.getLogger().info("Using resource pack " + resourcePackFile.getName());
         }
     }
@@ -45,6 +51,32 @@ public class ResourcePackManager {
         }
 
         return null;
+    }
+
+    private void initializeImageHashmap() {
+        if(this.resourcePackFile == null) {
+            Bukkit.getLogger().warning("Tried getting texture file but no resource path found.");
+            return;
+        }
+
+        for (Material material : Material.values()) {
+            File textureFile = this.getTextureByMaterial(material);
+            if(textureFile != null) {
+                try {
+                    BufferedImage image = ImageIO.read(textureFile);
+                    imageHashMap.put(material, image);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
+        Bukkit.getLogger().info("Loaded " + this.imageHashMap.size() + " textures from resource pack " + this.resourcePackFile.getName());
+    }
+
+    public HashMap<Material, BufferedImage> getImageHashMap() {
+        return this.getImageHashMap();
     }
 
 }
