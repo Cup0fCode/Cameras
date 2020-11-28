@@ -76,7 +76,7 @@ public class ResourcePackManager {
     }
 
     public HashMap<Material, BufferedImage> getImageHashMap() {
-        return this.getImageHashMap();
+        return this.imageHashMap;
     }
 
 }

@@ -35,8 +35,8 @@ public class Renderer extends MapRenderer {
 				RayTraceResult result = player.getWorld().rayTraceBlocks(eyes, new Vector(Math.cos(yaw + xrotate)*Math.cos(pitch + yrotate), Math.sin(pitch + yrotate), Math.sin(yaw + xrotate)*Math.cos(pitch + yrotate)), 256);
 				//Bukkit.getLogger().info("Pitch: " + pitch + ", Yaw: " + yaw);
 				if (result != null) {
-					canvas.setPixel(x, y, Utils.colorFromType(result.getHitBlock(), result.getHitBlock().getLightFromBlocks() + result.getHitBlock().getLightFromSky()));
-					canvasBytes[x][y] = Utils.colorFromType(result.getHitBlock(), result.getHitBlock().getLightFromBlocks() + result.getHitBlock().getLightFromSky());
+					canvas.setPixel(x, y, Utils.colorFromType(result.getHitBlock(), result.getHitBlock().getLightFromBlocks() + result.getHitBlock().getLightFromSky(), result.getHitBlockFace()));
+					canvasBytes[x][y] = Utils.colorFromType(result.getHitBlock(), result.getHitBlock().getLightFromBlocks() + result.getHitBlock().getLightFromSky(), result.getHitBlockFace());
 				} else {
 					canvas.setPixel(x, y, MapPalette.PALE_BLUE);
 					canvasBytes[x][y] = MapPalette.PALE_BLUE;
