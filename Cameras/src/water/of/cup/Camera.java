@@ -48,7 +48,8 @@ public class Camera extends JavaPlugin {
 
 		// Resource pack manager test
 		File grassFile = this.resourcePackManager.getTextureByMaterial(Material.GRASS);
-		Bukkit.getLogger().info("Loaded grass texture " + grassFile.getName());
+		if(grassFile != null)
+			Bukkit.getLogger().info("Loaded grass texture " + grassFile.getName());
 
 		File folder = new File(getDataFolder() + "/maps");
 		File[] listOfFiles = folder.listFiles();
