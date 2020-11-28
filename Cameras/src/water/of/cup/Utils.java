@@ -179,8 +179,6 @@ public class Utils {
 		blocksMap.put(Material.PURPLE_CONCRETE, new Color(155, 45, 145));
 		blocksMap.put(Material.RED_CONCRETE, new Color(136, 30, 33));
 		blocksMap.put(Material.YELLOW_CONCRETE, new Color(222, 162, 19));
-		blocksMap.put(Material.CRAFTING_TABLE, new Color(33, 23, 57));
-		blocksMap.put(Material.ENCHANTING_TABLE, new Color(33, 23, 57));
 		blocksMap.put(Material.SNOW, new Color(232, 240, 239));
 		blocksMap.put(Material.SNOW_BLOCK, new Color(232, 240, 239));
 	}
@@ -194,39 +192,8 @@ public class Utils {
 		}
 		if (imageMap.containsKey(block.getType())) {
 			BufferedImage image = imageMap.get(block.getType());
-			return MapPalette.matchColor(new Color(image.getRGB(image.getWidth() / 2, image.getHeight() / 2)));
+			return MapPalette.matchColor(new Color(image.getRGB((int) (image.getWidth() / 1.5), (int) (image.getHeight() / 1.5))));
 		}
-		
-//		if (imageMap.containsKey(block.getType())) {
-//			BufferedImage image = imageMap.get(block.getType());
-//			try {
-//			switch (blockFace) {
-//			case DOWN:
-//			case UP:	
-//				return MapPalette.matchColor(new Color(image.getRGB((int) (image.getWidth() * Math.floor(vector.getX())), (int) (image.getWidth() * Math.floor(vector.getZ())))));
-//			case EAST:
-//			case WEST:
-//				return MapPalette.matchColor(new Color(image.getRGB((int) (image.getWidth() * Math.floor(vector.getX())), (int) (image.getWidth() * Math.floor(vector.getY())))));
-//			case NORTH:
-//			case SOUTH:
-//				return MapPalette.matchColor(new Color(image.getRGB((int) (image.getWidth() * Math.floor(vector.getZ())), (int) (image.getWidth() * Math.floor(vector.getY())))));
-//			default:
-//				break; 
-//			}
-//			} catch (Exception e) {
-//			}
-//			//return average color
-//			
-//		}
-//		try {
-			
-//		Color color = blocksMap.get(block.getType());
-//			//MaterialMapColor color = ((CraftBlock) block).getNMS().c(null, null);
-//		return MapPalette.matchColor(color);
-//		//return MapPalette.matchColor(color);
-//		} catch (Exception e) {
-////			System.out.print("Missing:" + block.getType().toString());
-//		}
 		return MapPalette.GRAY_2;
 		
 	}
