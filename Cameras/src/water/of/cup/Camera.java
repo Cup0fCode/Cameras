@@ -36,12 +36,19 @@ public class Camera extends JavaPlugin {
 
 	private static Camera instance;
 	List<Integer> mapIDsNotToRender = new ArrayList<>();
+	ResourcePackManager resourcePackManager = new ResourcePackManager();
 
 	@Override
 	public void onEnable() {
 		instance = this;
 
 		loadConfig();
+
+		this.resourcePackManager.initialize();
+
+		// Resource pack manager test
+		File grassFile = this.resourcePackManager.getTextureByMaterial(Material.GRASS);
+		Bukkit.getLogger().info("Loaded grass texture " + grassFile.getName());
 
 		File folder = new File(getDataFolder() + "/maps");
 		File[] listOfFiles = folder.listFiles();
@@ -177,5 +184,9 @@ public class Camera extends JavaPlugin {
 		if (!mapDir.exists()) {
 			mapDir.mkdir();
 		}
+	}
+
+	public ResourcePackManager getResourcePackManager() {
+		return this.resourcePackManager;
 	}
 }
