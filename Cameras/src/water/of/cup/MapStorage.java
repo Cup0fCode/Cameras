@@ -14,10 +14,10 @@ import java.util.List;
 public class MapStorage {
 
     public static void store(int id, byte[][] data) {
-//        String serializedData = serializeMapData(data);
-        String serializedData = serializeMapDataSimple(data);
+//        String serializedDataSimple = serializeMapDataSimple(data);
+        String serializedData = serializeMapDataCompressed(data);
 
-        Bukkit.getLogger().info("Serialized Data: " + serializedData);
+//        Bukkit.getLogger().info("Serialized Data: " + serializedData);
 
         File file = new File(Camera.getInstance().getDataFolder(), "maps/map_" + id + ".txt");
         if(!file.exists()){
@@ -36,36 +36,29 @@ public class MapStorage {
             e.printStackTrace();
         }
     }
+    
+    public static String serializeMapDataCompressed(byte[][] data) {
+        String outputString = "";
+        int count = 1;
+        for(int i = 0; i < (128*128); i++) {
+            int row =  i / 128;
+            int column = i % 128;
+            int rownext = (i+1) / 128;
+            int colnext = (i+1) % 128;
 
-    public static String serializeMapData(byte[][] data) {
-        String current = String.format("%s", data[0][0]);
-        StringBuilder builder = new StringBuilder();
-        int currentCount = 0;
-
-        for(int i = 0; i < data.length; i++) {
-            for(int j = 0; j < data[i].length; j++) {
-                byte color = data[i][j];
-
-                String colorString = String.format("%s", color);
-
-                if(i == data.length-1 && j == data[i].length-1) {
-                    if(current.equals(colorString)) currentCount++;
-                    builder.append(colorString).append("_").append(currentCount).append(",");
-                    continue;
-                }
-
-                if(current.equals(colorString)) {
-                    currentCount++;
-                    continue;
-                }
-
-                current = colorString;
-                builder.append(colorString).append("_").append(currentCount).append(",");
-                currentCount = 1;
+            count = 1;
+            while(i < (128*128) - 1 && data[row][column] == data[rownext][colnext]) {
+                count++;
+                i++;
+                row =  i / 128;
+                column = i % 128;
+                rownext = (i+1) / 128;
+                colnext = (i+1) % 128;
             }
-        }
 
-        return builder.toString();
+            outputString = outputString + data[row][column] + "_" + count + ",";
+        }
+        return outputString;
     }
 
     public static String serializeMapDataSimple(byte[][] data) {
