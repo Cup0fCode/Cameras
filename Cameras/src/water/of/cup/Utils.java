@@ -111,6 +111,7 @@ public class Utils {
 		blocksMap.put(Material.SUGAR_CANE, new Color(71, 139, 42));
 		blocksMap.put(Material.BEDROCK, new Color(47, 47, 47));
 		blocksMap.put(Material.TORCH, new Color(206, 173, 26));
+		blocksMap.put(Material.WALL_TORCH, new Color(206, 173, 26));
 		blocksMap.put(Material.PUMPKIN, new Color(222, 141, 28));
 		blocksMap.put(Material.CARVED_PUMPKIN, new Color(222, 141, 28));
 		blocksMap.put(Material.JACK_O_LANTERN, new Color(222, 141, 28));
@@ -192,7 +193,8 @@ public class Utils {
 		}
 		if (imageMap.containsKey(block.getType())) {
 			BufferedImage image = imageMap.get(block.getType());
-			return MapPalette.matchColor(new Color(image.getRGB((int) (image.getWidth() / 1.5), (int) (image.getHeight() / 1.5))));
+			Color color = new Color(image.getRGB((int) (image.getWidth() / 1.5), (int) (image.getHeight() / 1.5)));
+			return MapPalette.matchColor(new Color(color.getRed(), color.getGreen(), color.getBlue()));
 		}
 		return MapPalette.GRAY_2;
 		
