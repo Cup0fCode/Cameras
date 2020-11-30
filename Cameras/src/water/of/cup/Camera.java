@@ -75,12 +75,6 @@ public class Camera extends JavaPlugin {
 								mapIDsNotToRender.add(mapId);
 
 								Bukkit.getLogger().info("Starting render... " + mapId);
-//
-//								for (int x = 0; x < 128; x++) {
-//									for (int y = 0; y < 128; y++) {
-//										mapCanvas.setPixel(x, y, (byte) 7);
-//									}
-//								}
 
 								int x = 0;
 								int y = 0;
@@ -100,12 +94,9 @@ public class Camera extends JavaPlugin {
 
 										skipsLeft = Integer.parseInt(str.substring(str.indexOf('_') + 1));
 
-//										Bukkit.getLogger().info("MapID debug: " + mapId + " substr: " + str + " color: " + colorByte + " skipLefts: " + skipsLeft);
 									}
 
-									// fix something up here
 									while(skipsLeft != 0) {
-//										Bukkit.getLogger().info("MapID debug: " + mapId + " x: " + x + " y: " + y + " skipsLeft: " + skipsLeft);
 										mapCanvas.setPixel(x, y, colorByte);
 
 										y++;
