@@ -182,6 +182,10 @@ public class Utils {
 		blocksMap.put(Material.YELLOW_CONCRETE, new Color(222, 162, 19));
 		blocksMap.put(Material.SNOW, new Color(232, 240, 239));
 		blocksMap.put(Material.SNOW_BLOCK, new Color(232, 240, 239));
+		blocksMap.put(Material.GLASS, new Color(255,255,255));
+		blocksMap.put(Material.WHITE_STAINED_GLASS, new Color(255,255,255));
+		blocksMap.put(Material.GLASS_PANE, new Color(255,255,255));
+		blocksMap.put(Material.WHITE_STAINED_GLASS_PANE, new Color(255,255,255));
 	}
 
 	@SuppressWarnings("deprecation")
