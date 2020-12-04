@@ -21,7 +21,7 @@ public class Utils {
 	static Map<Material, Color> blocksMap = new HashMap<Material, Color>();
 
 	public static void loadColors() {
-
+		//Materials we don't want to use minecraft images for (could be because the image provides a poor color)
 		blocksMap.put(Material.GRASS, new Color(49, 101, 25));
 		blocksMap.put(Material.TALL_GRASS, new Color(49, 101, 25));
 		blocksMap.put(Material.LARGE_FERN, new Color(49, 101, 25));
@@ -191,16 +191,18 @@ public class Utils {
 	@SuppressWarnings("deprecation")
 	public static byte colorFromType(Block block, int light, BlockFace blockFace) {
 		HashMap<Material, BufferedImage> imageMap = Camera.getInstance().getResourcePackManager().getImageHashMap();
-		if (blocksMap.containsKey(block.getType())) {
+		if (blocksMap.containsKey(block.getType())) { 
+			//if blockMap has a color for the material, use that color
 			Color color = blocksMap.get(block.getType());
 			return MapPalette.matchColor(color);
 		}
 		if (imageMap.containsKey(block.getType())) {
+			//if imageMap has a color for the material, use that color
 			BufferedImage image = imageMap.get(block.getType());
-			Color color = new Color(image.getRGB((int) (image.getWidth() / 1.5), (int) (image.getHeight() / 1.5)));
+			Color color = new Color(image.getRGB((int) (image.getWidth() / 1.5), (int) (image.getHeight() / 1.5))); //gets certain pixel in image to use as color TODO: Create a hashmap of colors so we don't need to access the image multiple times.
 			return MapPalette.matchColor(new Color(color.getRed(), color.getGreen(), color.getBlue()));
 		}
-		return MapPalette.GRAY_2;
+		return MapPalette.GRAY_2; //no color was found, use gray
 		
 	}
 }

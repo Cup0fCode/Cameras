@@ -20,8 +20,6 @@ public class ZipUtils {
                 long size = zipEntry.getSize();
                 long compressedSize = zipEntry.getCompressedSize();
 
-//                Bukkit.getLogger().info("ZipUtils: name: " + name + " | size: " + size + " | compressed size: + " + compressedSize);
-
                 File file = new File(destPath + name);
                 if (name.endsWith("/")) {
                     file.mkdirs();

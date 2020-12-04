@@ -20,16 +20,19 @@ public class CameraClick implements Listener {
 		Player p = e.getPlayer();
 		if ((e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
 				&& e.getItem().getItemMeta().getDisplayName().equals(ChatColor.DARK_BLUE + "Camera")) {
-			if (p.getInventory().firstEmpty() == -1) {
+			if (p.getInventory().firstEmpty() == -1) { //check to make sure there is room in the inventory for the map
 				p.sendMessage("You can not take a picture with a full inventory");
 				return;
 			}
-			if (p.getInventory().contains(Material.PAPER)) {
-				Map<Integer, ? extends ItemStack> paperHash = p.getInventory().all(Material.PAPER);
+			if (p.getInventory().contains(Material.PAPER)) { //check to make sure the player has paper
+				
+				//remove 1 paper from the player's inventory
+				Map<Integer, ? extends ItemStack> paperHash = p.getInventory().all(Material.PAPER); 
 				for (ItemStack item : paperHash.values()) {
 					item.setAmount(item.getAmount() - 1);
 					break;
 				}
+				
 				Picture.takePicture(p);
 			} else {
 				p.sendMessage("You must have paper in order to take a picture");

@@ -18,26 +18,29 @@ public class Renderer extends MapRenderer {
 		if (map.isLocked()) {
 			return;
 		}
-		Bukkit.getLogger().info("Rendering picture...");
-
-		Location eyes = player.getEyeLocation();
+		
+		//get pitch and yaw of players head to calculate ray trace directions
+		Location eyes = player.getEyeLocation(); 
 		double pitch = -Math.toRadians(player.getEyeLocation().getPitch());
-		double yaw = Math.toRadians(player.getEyeLocation().getYaw() + 90);
+		double yaw = Math.toRadians(player.getEyeLocation().getYaw() + 90); 
 
 		byte[][] canvasBytes = new byte[128][128];
 
+		//loop through every pixel on map
 		for (int x = 0; x < 128; x++) {
-			for (int y = 0; y < 128; y++) {
+			for (int y = 0; y < 128; y++) { 
 				
-				double yrotate = -((y) * .9 / 128 - .45);
+				//calculate ray rotations
+				double yrotate = -((y) * .9 / 128 - .45); 
 				double xrotate = ((x) * .9 / 128 - .45);
 				
 				RayTraceResult result = player.getWorld().rayTraceBlocks(eyes, new Vector(Math.cos(yaw + xrotate)*Math.cos(pitch + yrotate), Math.sin(pitch + yrotate), Math.sin(yaw + xrotate)*Math.cos(pitch + yrotate)), 256);
-				//Bukkit.getLogger().info("Pitch: " + pitch + ", Yaw: " + yaw);
-				if (result != null) {
+				if (result != null) { 
+					//set map pixel to color of block found
 					canvas.setPixel(x, y, Utils.colorFromType(result.getHitBlock(), result.getHitBlock().getLightFromBlocks() + result.getHitBlock().getLightFromSky(), result.getHitBlockFace()));
 					canvasBytes[x][y] = Utils.colorFromType(result.getHitBlock(), result.getHitBlock().getLightFromBlocks() + result.getHitBlock().getLightFromSky(), result.getHitBlockFace());
 				} else {
+					//no block was hit, so we will assume we are looking at the sky
 					canvas.setPixel(x, y, MapPalette.PALE_BLUE);
 					canvasBytes[x][y] = MapPalette.PALE_BLUE;
 				}
