@@ -5,17 +5,10 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.v1_14_R1.block.CraftBlock;
 import org.bukkit.map.MapPalette;
-import org.bukkit.util.Vector;
-
-import net.minecraft.server.v1_14_R1.MaterialMapColor;
-import net.minecraft.server.v1_14_R1.MinecraftServer;
 
 public class Utils {
 	static Map<Material, Color> blocksMap = new HashMap<Material, Color>();

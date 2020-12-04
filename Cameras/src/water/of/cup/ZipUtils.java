@@ -1,12 +1,9 @@
 package water.of.cup;
 
-import org.bukkit.Bukkit;
-
 import java.io.*;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
 
 public class ZipUtils {
 
@@ -17,8 +14,6 @@ public class ZipUtils {
                 ZipEntry zipEntry = (ZipEntry) enu.nextElement();
 
                 String name = zipEntry.getName();
-                long size = zipEntry.getSize();
-                long compressedSize = zipEntry.getCompressedSize();
 
                 File file = new File(destPath + name);
                 if (name.endsWith("/")) {
@@ -42,6 +37,7 @@ public class ZipUtils {
                 fos.close();
 
             }
+
             zipFile.close();
     }
 }

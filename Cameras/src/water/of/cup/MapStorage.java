@@ -1,23 +1,17 @@
 package water.of.cup;
 
-import org.apache.logging.log4j.core.util.FileUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.map.MapRenderer;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
 
 public class MapStorage {
 
     public static void store(int id, byte[][] data) {
-//        String serializedDataSimple = serializeMapDataSimple(data);
+        // String serializedDataSimple = serializeMapDataSimple(data);
         String serializedData = serializeMapDataCompressed(data);
-
-//        Bukkit.getLogger().info("Serialized Data: " + serializedData);
 
         File file = new File(Camera.getInstance().getDataFolder(), "maps/map_" + id + ".txt");
         if(!file.exists()){

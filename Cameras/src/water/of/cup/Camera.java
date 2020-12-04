@@ -3,6 +3,7 @@ package water.of.cup;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -37,6 +40,8 @@ public class Camera extends JavaPlugin {
 	private static Camera instance;
 	List<Integer> mapIDsNotToRender = new ArrayList<>();
 	ResourcePackManager resourcePackManager = new ResourcePackManager();
+	private File configFile;
+	private FileConfiguration config;
 
 	@Override
 	public void onEnable() {
@@ -60,7 +65,6 @@ public class Camera extends JavaPlugin {
 				try {
 					BufferedReader br = new BufferedReader(new FileReader(file));
 					String encodedData = br.readLine();
-					Bukkit.getLogger().info("Reading MapID: " + mapId);
 
 					MapView mapView = Bukkit.getMap(Integer.valueOf(mapId));
 
@@ -73,8 +77,6 @@ public class Camera extends JavaPlugin {
 						public void render(MapView mapViewNew, MapCanvas mapCanvas, Player player) {
 							if(!mapIDsNotToRender.contains(mapId)) {
 								mapIDsNotToRender.add(mapId);
-
-								Bukkit.getLogger().info("Starting render... " + mapId);
 
 								int x = 0;
 								int y = 0;
@@ -107,10 +109,7 @@ public class Camera extends JavaPlugin {
 
 										skipsLeft -= 1;
 									}
-
-
 								}
-								Bukkit.getLogger().info("Ending render... " + mapId);
 							}
 						}
 					});
@@ -172,13 +171,50 @@ public class Camera extends JavaPlugin {
 			getDataFolder().mkdir();
 		}
 
+		configFile = new File(getDataFolder(), "config.yml");
+		if (!configFile.exists()) {
+			try {
+				configFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		config = YamlConfiguration.loadConfiguration(configFile);
+
+		if (!config.contains("settings")) {
+			config.set("settings.messages.notready", "&cCameras is still loading, please wait.");
+			config.set("settings.messages.delay", "&cPlease wait before taking another picture.");
+			config.set("settings.messages.invfull", "&cYou can not take a picture with a full inventory");
+			config.set("settings.messages.nopaper", "&cYou must have paper in order to take a picture");
+			config.set("settings.messages.enabled", true);
+			config.set("settings.delay.amount", 1000);
+			config.set("settings.delay.enabled", true);
+		}
+
 		File mapDir = new File(getDataFolder(), "maps");
 		if (!mapDir.exists()) {
 			mapDir.mkdir();
 		}
+
+		this.saveConfig();
 	}
 
 	public ResourcePackManager getResourcePackManager() {
 		return this.resourcePackManager;
+	}
+
+	@Override
+	public void saveConfig() {
+		try {
+			config.save(configFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public FileConfiguration getConfig() {
+		return config;
 	}
 }

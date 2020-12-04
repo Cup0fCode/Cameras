@@ -16,6 +16,7 @@ public class ResourcePackManager {
 
 	private File resourcePackFile;
 	private HashMap<Material, BufferedImage> imageHashMap = new HashMap<>();
+	private boolean isLoaded;
 
     public void initialize() {
         File dataFolder = Camera.getInstance().getDataFolder();
@@ -24,18 +25,26 @@ public class ResourcePackManager {
             mapDir.mkdir();
         }
 
-        File folder = new File(dataFolder + "/resource-packs");
-        File[] listOfFiles = folder.listFiles();
-
-        if(listOfFiles.length == 0) {
-            Bukkit.getLogger().info("No resource pack found, downloading...");
+        if(mapDir.listFiles().length == 0) {
+            Bukkit.getLogger().info("No resource pack found, downloading... (this may take a while)");
             this.downloadResourcePack();
-        } else {
-            this.resourcePackFile = listOfFiles[0];
         }
 
-        this.initializeImageHashmap();
-        Bukkit.getLogger().info("Using resource pack " + this.resourcePackFile.getName());
+        for(File file : mapDir.listFiles()) {
+        	if(!file.getName().endsWith(".zip")) {
+				this.resourcePackFile = file;
+			} else {
+        		file.delete();
+			}
+		}
+
+		if(this.resourcePackFile == null) {
+			Bukkit.getLogger().warning("No resource pack found. Please restart.");
+			return;
+		}
+
+		Bukkit.getLogger().info("Loading in resource pack (this may take a while)");
+		Bukkit.getScheduler().runTaskAsynchronously(Camera.getInstance(), () -> this.initializeImageHashmap());
     }
 
 	public File getTextureByMaterial(Material material) {
@@ -84,6 +93,7 @@ public class ResourcePackManager {
 
 		Bukkit.getLogger().info("Loaded " + this.imageHashMap.size() + " textures from resource pack "
 				+ this.resourcePackFile.getName());
+		this.isLoaded = true;
 	}
 
 	public HashMap<Material, BufferedImage> getImageHashMap() {
@@ -107,9 +117,12 @@ public class ResourcePackManager {
 
             ZipUtils.unzip(fileLocation, Camera.getInstance().getDataFolder() + "/resource-packs/1_16_4/");
             fileLocation.delete();
-            this.resourcePackFile = destLocation;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+	public boolean isLoaded() {
+		return this.isLoaded;
+	}
 }
