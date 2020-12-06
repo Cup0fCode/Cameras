@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -14,7 +15,8 @@ public class Utils {
 	static Map<Material, Color> blocksMap = new HashMap<Material, Color>();
 
 	public static void loadColors() {
-		//Materials we don't want to use minecraft images for (could be because the image provides a poor color)
+		// Materials we don't want to use minecraft images for (could be because the
+		// image provides a poor color)
 		blocksMap.put(Material.GRASS, new Color(49, 101, 25));
 		blocksMap.put(Material.TALL_GRASS, new Color(49, 101, 25));
 		blocksMap.put(Material.LARGE_FERN, new Color(49, 101, 25));
@@ -175,27 +177,39 @@ public class Utils {
 		blocksMap.put(Material.YELLOW_CONCRETE, new Color(222, 162, 19));
 		blocksMap.put(Material.SNOW, new Color(232, 240, 239));
 		blocksMap.put(Material.SNOW_BLOCK, new Color(232, 240, 239));
-		blocksMap.put(Material.GLASS, new Color(255,255,255));
-		blocksMap.put(Material.WHITE_STAINED_GLASS, new Color(255,255,255));
-		blocksMap.put(Material.GLASS_PANE, new Color(255,255,255));
-		blocksMap.put(Material.WHITE_STAINED_GLASS_PANE, new Color(255,255,255));
+		blocksMap.put(Material.GLASS, new Color(255, 255, 255));
+		blocksMap.put(Material.WHITE_STAINED_GLASS, new Color(255, 255, 255));
+		blocksMap.put(Material.GLASS_PANE, new Color(255, 255, 255));
+		blocksMap.put(Material.WHITE_STAINED_GLASS_PANE, new Color(255, 255, 255));
+		blocksMap.put(Material.CAMPFIRE, new Color(206, 173, 26));
+		blocksMap.put(Material.WATER, new Color(15, 94, 156));
+		blocksMap.put(Material.COMMAND_BLOCK, new Color(198, 126, 78));
 	}
 
 	@SuppressWarnings("deprecation")
-	public static byte colorFromType(Block block, int light, BlockFace blockFace) {
+	public static byte colorFromType(Block block, double[] dye) {
 		HashMap<Material, BufferedImage> imageMap = Camera.getInstance().getResourcePackManager().getImageHashMap();
-		if (blocksMap.containsKey(block.getType())) { 
-			//if blockMap has a color for the material, use that color
+		if (blocksMap.containsKey(block.getType())) {
+			// if blockMap has a color for the material, use that color
 			Color color = blocksMap.get(block.getType());
-			return MapPalette.matchColor(color);
+			return MapPalette.matchColor(new Color((int) (color.getRed() * dye[0]), (int) (color.getGreen() * dye[1]),
+					(int) (color.getBlue() * dye[2])));
 		}
 		if (imageMap.containsKey(block.getType())) {
-			//if imageMap has a color for the material, use that color
+			// if imageMap has a color for the material, use that color
 			BufferedImage image = imageMap.get(block.getType());
-			Color color = new Color(image.getRGB((int) (image.getWidth() / 1.5), (int) (image.getHeight() / 1.5))); //gets certain pixel in image to use as color TODO: Create a hashmap of colors so we don't need to access the image multiple times.
-			return MapPalette.matchColor(new Color(color.getRed(), color.getGreen(), color.getBlue()));
+			if (image == null) {
+				Bukkit.getLogger().info("Missing Image For: " + block.getType());
+			} else {
+				// gets certain pixel in image to use as color TODO: Create a hashmap of colors
+				// so we don't need to access the image multiple times.
+				Color color = new Color(image.getRGB((int) (image.getWidth() / 1.5), (int) (image.getHeight() / 1.5)));
+
+				return MapPalette.matchColor(new Color((int) (color.getRed() * dye[0]), (int) (color.getGreen() * dye[1]),
+						(int) (color.getBlue() * dye[2])));
+			}
 		}
-		return MapPalette.GRAY_2; //no color was found, use gray
-		
+		return MapPalette.GRAY_2; // no color was found, use gray
+
 	}
 }
