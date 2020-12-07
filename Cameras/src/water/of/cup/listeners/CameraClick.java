@@ -28,6 +28,10 @@ public class CameraClick implements Listener {
 
 		if ((e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
 				&& e.getItem().getItemMeta().getDisplayName().equals(ChatColor.DARK_BLUE + "Camera")) {
+
+			boolean usePerms = instance.getConfig().getBoolean("settings.camera.permissions");
+			if(usePerms && !p.hasPermission("cameras.useitem")) return;
+
 			boolean messages = instance.getConfig().getBoolean("settings.messages.enabled");
 			if (p.getInventory().firstEmpty() == -1) { //check to make sure there is room in the inventory for the map
 				if(messages) {

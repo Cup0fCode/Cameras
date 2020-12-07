@@ -2,6 +2,7 @@ package water.of.cup;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -11,6 +12,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+
+import static org.bukkit.Bukkit.getServer;
 
 public class ResourcePackManager {
 
@@ -44,7 +47,14 @@ public class ResourcePackManager {
 		}
 
 		Bukkit.getLogger().info("Loading in resource pack (this may take a while)");
-		Bukkit.getScheduler().runTaskAsynchronously(Camera.getInstance(), () -> this.initializeImageHashmap());
+
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				initializeImageHashmap();
+				cancel();
+			}
+		}.runTaskAsynchronously(Camera.getInstance());
     }
 
 	public File getTextureByMaterial(Material material) {

@@ -32,6 +32,7 @@ import water.of.cup.commands.CameraCommands;
 import water.of.cup.listeners.CameraClick;
 import water.of.cup.listeners.CameraPlace;
 import water.of.cup.listeners.PlayerJoin;
+import water.of.cup.listeners.PrepareItemCraft;
 
 public class Camera extends JavaPlugin {
 
@@ -121,10 +122,16 @@ public class Camera extends JavaPlugin {
 
 		Utils.loadColors();
 		getCommand("takePicture").setExecutor(new CameraCommands());
-		registerListeners(new CameraClick(), new CameraPlace(), new PlayerJoin());
+		registerListeners(new CameraClick(), new CameraPlace(), new PlayerJoin(), new PrepareItemCraft());
 
-		if(config.getBoolean("settings.camera.recipe"))
+		if(config.getBoolean("settings.camera.recipe.enabled"))
 			addCameraRecipe();
+	}
+
+	@Override
+	public void onDisable() {
+		/* Disable all current async tasks */
+		Bukkit.getScheduler().cancelTasks(this);
 	}
 
 	private void registerListeners(Listener... listeners) {
@@ -154,12 +161,13 @@ public class Camera extends JavaPlugin {
 
 		NamespacedKey key = new NamespacedKey(this, "camera");
 		ShapedRecipe recipe = new ShapedRecipe(key, camera);
-		recipe.shape("IGI", "ITI", "IRI");
 
-		recipe.setIngredient('I', Material.IRON_INGOT);
-		recipe.setIngredient('G', Material.GLASS_PANE);
-		recipe.setIngredient('T', Material.GLOWSTONE_DUST);
-		recipe.setIngredient('R', Material.REDSTONE);
+		ArrayList<String> shapeArr = (ArrayList<String>) config.get("settings.camera.recipe.shape");
+		recipe.shape(shapeArr.toArray(new String[shapeArr.size()]));
+
+		for(String ingredientKey : config.getConfigurationSection("settings.camera.recipe.ingredients").getKeys(false)){
+			recipe.setIngredient(ingredientKey.charAt(0), Material.valueOf((String) config.get("settings.camera.recipe.ingredients." + ingredientKey)));
+		}
 
 		Bukkit.addRecipe(recipe);
 	}
@@ -184,13 +192,35 @@ public class Camera extends JavaPlugin {
 
 		defaultConfig.put("settings.messages.notready", "&cCameras is still loading, please wait.");
 		defaultConfig.put("settings.messages.delay", "&cPlease wait before taking another picture.");
-		defaultConfig.put("settings.messages.invfull", "&cYou can not take a picture with a full inventory");
-		defaultConfig.put("settings.messages.nopaper", "&cYou must have paper in order to take a picture");
+		defaultConfig.put("settings.messages.invfull", "&cYou can not take a picture with a full inventory.");
+		defaultConfig.put("settings.messages.nopaper", "&cYou must have paper in order to take a picture.");
 		defaultConfig.put("settings.messages.enabled", true);
 		defaultConfig.put("settings.delay.amount", 1000);
 		defaultConfig.put("settings.delay.enabled", true);
 		defaultConfig.put("settings.camera.transparentWater", true);
-		defaultConfig.put("settings.camera.recipe", true);
+		defaultConfig.put("settings.camera.permissions", true);
+
+		HashMap<String, String> defaultRecipe = new HashMap<>();
+		defaultRecipe.put("I", Material.IRON_INGOT.toString());
+		defaultRecipe.put("G", Material.GLASS_PANE.toString());
+		defaultRecipe.put("T", Material.GLOWSTONE_DUST.toString());
+		defaultRecipe.put("R", Material.REDSTONE.toString());
+
+		defaultConfig.put("settings.camera.recipe.enabled", true);
+		defaultConfig.put("settings.camera.recipe.shape", new ArrayList<String>() {
+			{
+				add("IGI");
+				add("ITI");
+				add("IRI");
+			}
+		});
+
+
+		if(!config.contains("settings.camera.recipe.ingredients")) {
+			for (String key : defaultRecipe.keySet()) {
+				defaultConfig.put("settings.camera.recipe.ingredients." + key, defaultRecipe.get(key));
+			}
+		}
 
 		for (String key : defaultConfig.keySet()) {
 			if(!config.contains(key)) {

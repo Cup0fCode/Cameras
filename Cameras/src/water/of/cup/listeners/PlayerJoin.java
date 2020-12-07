@@ -13,7 +13,7 @@ public class PlayerJoin implements Listener {
     /* Add recipe to new players */
     @EventHandler
     public void playerJoin(PlayerJoinEvent event) {
-        if(instance.getConfig().getBoolean("settings.camera.recipe"))
+        if(instance.getConfig().getBoolean("settings.camera.recipe.enabled"))
             event.getPlayer().discoverRecipe(new NamespacedKey(instance, "camera"));
     }
 
