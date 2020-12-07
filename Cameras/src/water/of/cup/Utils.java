@@ -210,6 +210,5 @@ public class Utils {
 			}
 		}
 		return MapPalette.GRAY_2; // no color was found, use gray
-
 	}
 }

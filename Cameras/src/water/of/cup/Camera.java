@@ -31,6 +31,7 @@ import com.mojang.authlib.properties.Property;
 import water.of.cup.commands.CameraCommands;
 import water.of.cup.listeners.CameraClick;
 import water.of.cup.listeners.CameraPlace;
+import water.of.cup.listeners.PlayerJoin;
 
 public class Camera extends JavaPlugin {
 
@@ -117,13 +118,13 @@ public class Camera extends JavaPlugin {
 
 			}
 		}
-		addCameraRecipe();
 
 		Utils.loadColors();
 		getCommand("takePicture").setExecutor(new CameraCommands());
-		registerListeners(new CameraClick(), new CameraPlace());
-		
-		
+		registerListeners(new CameraClick(), new CameraPlace(), new PlayerJoin());
+
+		if(config.getBoolean("settings.camera.recipe"))
+			addCameraRecipe();
 	}
 
 	private void registerListeners(Listener... listeners) {
@@ -151,7 +152,8 @@ public class Camera extends JavaPlugin {
 		}
 		camera.setItemMeta(cameraMeta);
 
-		ShapedRecipe recipe = new ShapedRecipe(camera);
+		NamespacedKey key = new NamespacedKey(this, "camera");
+		ShapedRecipe recipe = new ShapedRecipe(key, camera);
 		recipe.shape("IGI", "ITI", "IRI");
 
 		recipe.setIngredient('I', Material.IRON_INGOT);
@@ -159,7 +161,7 @@ public class Camera extends JavaPlugin {
 		recipe.setIngredient('T', Material.GLOWSTONE_DUST);
 		recipe.setIngredient('R', Material.REDSTONE);
 
-		getServer().addRecipe(recipe);
+		Bukkit.addRecipe(recipe);
 	}
 
 	private void loadConfig() {
@@ -188,6 +190,7 @@ public class Camera extends JavaPlugin {
 		defaultConfig.put("settings.delay.amount", 1000);
 		defaultConfig.put("settings.delay.enabled", true);
 		defaultConfig.put("settings.camera.transparentWater", true);
+		defaultConfig.put("settings.camera.recipe", true);
 
 		for (String key : defaultConfig.keySet()) {
 			if(!config.contains(key)) {
