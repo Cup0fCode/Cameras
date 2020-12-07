@@ -17,13 +17,15 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 public class Renderer extends MapRenderer {
-	boolean transparentWater = false;
+	private Camera instance = Camera.getInstance();
 
 	@Override
 	public void render(MapView map, MapCanvas canvas, Player player) {
 		if (map.isLocked()) {
 			return;
 		}
+
+		boolean transparentWater = instance.getConfig().getBoolean("settings.camera.transparentWater");
 
 		// get pitch and yaw of players head to calculate ray trace directions
 		Location eyes = player.getEyeLocation();

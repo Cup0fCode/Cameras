@@ -5,10 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -138,7 +135,6 @@ public class Camera extends JavaPlugin {
 	}
 
 	public void addCameraRecipe() {
-
 		ItemStack camera = new ItemStack(Material.PLAYER_HEAD);
 		SkullMeta cameraMeta = (SkullMeta) camera.getItemMeta();
 		GameProfile profile = new GameProfile(UUID.randomUUID(), "");
@@ -182,14 +178,21 @@ public class Camera extends JavaPlugin {
 
 		config = YamlConfiguration.loadConfiguration(configFile);
 
-		if (!config.contains("settings")) {
-			config.set("settings.messages.notready", "&cCameras is still loading, please wait.");
-			config.set("settings.messages.delay", "&cPlease wait before taking another picture.");
-			config.set("settings.messages.invfull", "&cYou can not take a picture with a full inventory");
-			config.set("settings.messages.nopaper", "&cYou must have paper in order to take a picture");
-			config.set("settings.messages.enabled", true);
-			config.set("settings.delay.amount", 1000);
-			config.set("settings.delay.enabled", true);
+		HashMap<String, Object> defaultConfig = new HashMap<>();
+
+		defaultConfig.put("settings.messages.notready", "&cCameras is still loading, please wait.");
+		defaultConfig.put("settings.messages.delay", "&cPlease wait before taking another picture.");
+		defaultConfig.put("settings.messages.invfull", "&cYou can not take a picture with a full inventory");
+		defaultConfig.put("settings.messages.nopaper", "&cYou must have paper in order to take a picture");
+		defaultConfig.put("settings.messages.enabled", true);
+		defaultConfig.put("settings.delay.amount", 1000);
+		defaultConfig.put("settings.delay.enabled", true);
+		defaultConfig.put("settings.camera.transparentWater", true);
+
+		for (String key : defaultConfig.keySet()) {
+			if(!config.contains(key)) {
+				config.set(key, defaultConfig.get(key));
+			}
 		}
 
 		File mapDir = new File(getDataFolder(), "maps");
