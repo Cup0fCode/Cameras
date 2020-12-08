@@ -1,6 +1,7 @@
 package water.of.cup;
 
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.function.Predicate;
 
 import org.bukkit.Bukkit;
@@ -61,7 +62,13 @@ public class Renderer extends MapRenderer {
 				}
 
 				if (result != null) {
-					// set map pixel to color of block found
+					if(result.getHitBlock().getLightLevel() > 0) {
+						double shadowLevel = 8.0;
+						for(int i = 0; i < dye.length; i++) {
+							dye[i] = dye[i] * (result.getHitBlock().getRelative(result.getHitBlockFace()).getLightLevel() / shadowLevel);
+						}
+					}
+
 					byte color;
 					if (transparentWater == true) {
 						color = Utils.colorFromType(result.getHitBlock(), dye);

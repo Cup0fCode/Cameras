@@ -50,11 +50,11 @@ public class Utils {
 		blocksMap.put(Material.DIRT, new Color(168, 120, 83));
 		blocksMap.put(Material.SAND, new Color(222, 215, 172));
 		blocksMap.put(Material.SANDSTONE, new Color(213, 207, 162));
-		blocksMap.put(Material.ACACIA_LEAVES, new Color(73, 181, 24));
+		blocksMap.put(Material.ACACIA_LEAVES, new Color(44, 97, 22));
 		blocksMap.put(Material.BIRCH_LEAVES, new Color(114, 149, 76));
-		blocksMap.put(Material.DARK_OAK_LEAVES, new Color(72, 186, 18));
-		blocksMap.put(Material.JUNGLE_LEAVES, new Color(74, 185, 25));
-		blocksMap.put(Material.OAK_LEAVES, new Color(73, 183, 24));
+		blocksMap.put(Material.DARK_OAK_LEAVES, new Color(46, 111, 17));
+		blocksMap.put(Material.JUNGLE_LEAVES, new Color(60, 141, 24));
+		blocksMap.put(Material.OAK_LEAVES, new Color(49, 111, 21));
 		blocksMap.put(Material.SPRUCE_LEAVES, new Color(55, 91, 56));
 		blocksMap.put(Material.GRASS_PATH, new Color(170, 148, 89));
 		blocksMap.put(Material.COARSE_DIRT, new Color(104, 75, 51));
@@ -167,7 +167,7 @@ public class Utils {
 		blocksMap.put(Material.GRAY_CONCRETE, new Color(118, 119, 110));
 		blocksMap.put(Material.GREEN_CONCRETE, new Color(88, 156, 25));
 		blocksMap.put(Material.LIGHT_BLUE_CONCRETE, new Color(33, 130, 190));
-		blocksMap.put(Material.LIGHT_GRAY_CONCRETE, new Color(195, 203, 206));
+		blocksMap.put(Material.LIGHT_GRAY_CONCRETE, new Color(111, 115, 116));
 		blocksMap.put(Material.LIME_CONCRETE, new Color(90, 162, 23));
 		blocksMap.put(Material.MAGENTA_CONCRETE, new Color(162, 47, 152));
 		blocksMap.put(Material.ORANGE_CONCRETE, new Color(207, 81, 1));
@@ -192,8 +192,17 @@ public class Utils {
 		if (blocksMap.containsKey(block.getType())) {
 			// if blockMap has a color for the material, use that color
 			Color color = blocksMap.get(block.getType());
-			return MapPalette.matchColor(new Color((int) (color.getRed() * dye[0]), (int) (color.getGreen() * dye[1]),
-					(int) (color.getBlue() * dye[2])));
+			int redColor = (int) (color.getRed() * dye[0]);
+			int greenColor = (int) (color.getGreen() * dye[1]);
+			int blueColor = (int) (color.getBlue() * dye[2]);
+
+			if(redColor > 255) redColor = 255;
+			if(dye[0] < 0) redColor = (int) (redColor * dye[0]);
+			if(greenColor > 255) greenColor = 255;
+			if(dye[1] < 0) greenColor = (int) (greenColor * dye[0]);
+			if(blueColor > 255) blueColor = 255;
+			if(dye[2] < 0) blueColor = (int) (blueColor * dye[0]);
+			return MapPalette.matchColor(new Color(redColor, greenColor, blueColor));
 		}
 		if (imageMap.containsKey(block.getType())) {
 			// if imageMap has a color for the material, use that color
@@ -205,8 +214,14 @@ public class Utils {
 				// so we don't need to access the image multiple times.
 				Color color = new Color(image.getRGB((int) (image.getWidth() / 1.5), (int) (image.getHeight() / 1.5)));
 
-				return MapPalette.matchColor(new Color((int) (color.getRed() * dye[0]), (int) (color.getGreen() * dye[1]),
-						(int) (color.getBlue() * dye[2])));
+				int redColor = (int) (color.getRed() * dye[0]);
+				int greenColor = (int) (color.getGreen() * dye[1]);
+				int blueColor = (int) (color.getBlue() * dye[2]);
+
+				if(redColor > 255) redColor = 255;
+				if(greenColor > 255) greenColor = 255;
+				if(blueColor > 255) blueColor = 255;
+				return MapPalette.matchColor(new Color(redColor, greenColor, blueColor));
 			}
 		}
 		return MapPalette.GRAY_2; // no color was found, use gray
