@@ -198,6 +198,7 @@ public class Camera extends JavaPlugin {
 		defaultConfig.put("settings.delay.amount", 1000);
 		defaultConfig.put("settings.delay.enabled", true);
 		defaultConfig.put("settings.camera.transparentWater", true);
+		defaultConfig.put("settings.camera.shadows", true);
 		defaultConfig.put("settings.camera.permissions", true);
 
 		HashMap<String, String> defaultRecipe = new HashMap<>();

@@ -27,6 +27,7 @@ public class Renderer extends MapRenderer {
 		}
 
 		boolean transparentWater = instance.getConfig().getBoolean("settings.camera.transparentWater");
+		boolean shadows = instance.getConfig().getBoolean("settings.camera.shadows");
 
 		// get pitch and yaw of players head to calculate ray trace directions
 		Location eyes = player.getEyeLocation();
@@ -62,10 +63,13 @@ public class Renderer extends MapRenderer {
 				}
 
 				if (result != null) {
-					if(result.getHitBlock().getLightLevel() > 0) {
-						double shadowLevel = 8.0;
+					byte lightLevel = result.getHitBlock().getRelative(result.getHitBlockFace()).getLightLevel();
+
+					if(lightLevel > 0 && shadows) {
+						double shadowLevel = 15.0;
+
 						for(int i = 0; i < dye.length; i++) {
-							dye[i] = dye[i] * (result.getHitBlock().getRelative(result.getHitBlockFace()).getLightLevel() / shadowLevel);
+							dye[i] = dye[i] * (lightLevel / shadowLevel);
 						}
 					}
 

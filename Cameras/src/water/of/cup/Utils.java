@@ -197,11 +197,8 @@ public class Utils {
 			int blueColor = (int) (color.getBlue() * dye[2]);
 
 			if(redColor > 255) redColor = 255;
-			if(dye[0] < 0) redColor = (int) (redColor * dye[0]);
 			if(greenColor > 255) greenColor = 255;
-			if(dye[1] < 0) greenColor = (int) (greenColor * dye[0]);
 			if(blueColor > 255) blueColor = 255;
-			if(dye[2] < 0) blueColor = (int) (blueColor * dye[0]);
 			return MapPalette.matchColor(new Color(redColor, greenColor, blueColor));
 		}
 		if (imageMap.containsKey(block.getType())) {
