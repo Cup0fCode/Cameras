@@ -15,9 +15,9 @@ Players can craft cameras using the following recipe:
 Operators on the server can take pictures with the command /takepicture
 ## Pictures
 
-<img src="https://i.imgur.com/owFc62l.png" width="128">
-<img src="https://i.imgur.com/W8a7NU1.png" width="128">
-<img src="https://i.imgur.com/7FEUsxc.png" width="128">
+<img src="https://i.imgur.com/Bzi99fL.png" width="128">
+<img src="https://i.imgur.com/YRiBxGn.png" width="128">
+<img src="https://i.imgur.com/pstXzfc.png" width="128">
 
 ## Issues
 
