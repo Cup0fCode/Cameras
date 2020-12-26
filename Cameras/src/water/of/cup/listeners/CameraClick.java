@@ -26,6 +26,9 @@ public class CameraClick implements Listener {
 		if(e.getItem() == null)
 			return;
 
+		if(e.getItem().getItemMeta() == null)
+			return;
+
 		if ((e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
 				&& e.getItem().getItemMeta().getDisplayName().equals(ChatColor.DARK_BLUE + "Camera")) {
 

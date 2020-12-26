@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,6 +29,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
+import water.of.cup.bstats.Metrics;
 import water.of.cup.commands.CameraCommands;
 import water.of.cup.listeners.CameraClick;
 import water.of.cup.listeners.CameraPlace;
@@ -126,6 +128,12 @@ public class Camera extends JavaPlugin {
 
 		if(config.getBoolean("settings.camera.recipe.enabled"))
 			addCameraRecipe();
+
+		// Add bStats
+		Metrics metrics = new Metrics(this, 9671);
+		Bukkit.getLogger().info("[Cameras] bStats: " + metrics.isEnabled() + " plugin ver: " + getDescription().getVersion());
+
+		metrics.addCustomChart(new Metrics.SimplePie("plugin_version", () -> getDescription().getVersion()));
 	}
 
 	@Override
