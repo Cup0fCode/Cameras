@@ -1,4 +1,4 @@
-package water.of.cup;
+package water.of.cup.cameras;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,8 +12,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-
-import static org.bukkit.Bukkit.getServer;
 
 public class ResourcePackManager {
 

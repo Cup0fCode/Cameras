@@ -1,6 +1,6 @@
-main: water.of.cup.Camera
+main: water.of.cup.cameras.Camera
 name: Cameras
-version: '1.04'
+version: '1.05'
 description: Take Pictures.
 author: Nicholas Kopiwoda
 api-version: 1.14

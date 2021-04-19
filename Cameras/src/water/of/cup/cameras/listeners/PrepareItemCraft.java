@@ -1,4 +1,4 @@
-package water.of.cup.listeners;
+package water.of.cup.cameras.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -6,13 +6,11 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import water.of.cup.Camera;
+import water.of.cup.cameras.Camera;
 
 public class PrepareItemCraft implements Listener {
 

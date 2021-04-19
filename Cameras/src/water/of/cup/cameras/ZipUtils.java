@@ -1,4 +1,4 @@
-package water.of.cup;
+package water.of.cup.cameras;
 
 import java.io.*;
 import java.util.Enumeration;

@@ -1,10 +1,10 @@
-package water.of.cup.listeners;
+package water.of.cup.cameras.listeners;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import water.of.cup.Camera;
+import water.of.cup.cameras.Camera;
 
 public class PlayerJoin implements Listener {
 
